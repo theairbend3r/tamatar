@@ -3,6 +3,8 @@ use std::io;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     layout::{Alignment, Constraint, Layout},
+    style::Stylize,
+    text::Line,
     widgets::{Block, Borders, Paragraph},
     DefaultTerminal, Frame,
 };
@@ -28,12 +30,19 @@ impl App {
             Layout::horizontal([Constraint::Fill(1); 2]).areas(bottom);
 
         let title = Paragraph::new("tamatar")
-            .block(Block::default().borders(Borders::ALL))
-            .alignment(Alignment::Center);
+            .centered()
+            .bold()
+            .block(Block::default().borders(Borders::ALL));
 
         frame.render_widget(title, top);
-        frame.render_widget(Block::bordered().title("Time"), bottom_left);
-        frame.render_widget(Block::bordered().title("Controls"), bottom_right);
+        frame.render_widget(
+            Block::bordered().title(Line::from("Time").bold().centered()),
+            bottom_left,
+        );
+        frame.render_widget(
+            Block::bordered().title(Line::from("Controls").bold().centered()),
+            bottom_right,
+        );
     }
 
     fn handle_key_event(&mut self, key_event: KeyEvent) {
